@@ -41,7 +41,7 @@ export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isSam }) {
         const userTag = m.sender.split('@')[0];
         const reason = isTooLong ? 'Eccessiva lunghezza (Trava)' : 'Caratteri Zalgo/Crash rilevati';
         
-        // Messaggio estetico BLD-BLOOD
+        // Messaggio estetico 𝐄𝐑𝐑𝐎𝐑⁴⁰⁴
         const header = `⋆｡˚『 ╭ \`ANTITRAVA SYSTEM\` ╯ 』˚｡⋆`;
         const footer = `╰⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒`;
 

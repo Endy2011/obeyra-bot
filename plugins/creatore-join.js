@@ -6,7 +6,7 @@ let handler = async (m, { conn, text }) => {
   if (!code) throw 'Link non valido!';
 
   // Messaggio di attesa
-  await m.reply('🤖 *BLD-BLOOD STA ENTRRANDO NEL GRUPPO (PROBABILMENTE PER NUKKARE)*');
+  await m.reply('🤖 *𝐄𝐑𝐑𝐎𝐑⁴⁰⁴ STA ENTRRANDO NEL GRUPPO (PROBABILMENTE PER NUKKARE)*');
 
   // Piccolo delay per effetto realistico
   await delay(2000);

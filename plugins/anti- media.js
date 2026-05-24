@@ -30,7 +30,7 @@ export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isSam }) {
       },
     }).catch(() => {})
 
-  // Messaggio estetico in stile BLD-BLOOD
+  // Messaggio estetico in stile 𝐄𝐑𝐑𝐎𝐑⁴⁰⁴
   const header = `⋆｡˚『 ╭ \`ANTIMEDIA SYSTEM\` ╯ 』˚｡⋆`
   const text = `${header}
 ╭

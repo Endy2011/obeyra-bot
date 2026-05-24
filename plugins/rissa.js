@@ -1,7 +1,7 @@
 // Plugin Rissa Arena - Adattato con sistema economico Euro/Exp
 let rissaInCorso = {};
 
-const footer = '𝖇𝖑𝖔𝖔𝖉𝖇𝖔𝖙';
+const footer = '𝐄𝐑𝐑𝐎𝐑⁴⁰⁴';
 
 let handler = async (m, { conn, command, args, usedPrefix }) => {
     let chat = m.chat;

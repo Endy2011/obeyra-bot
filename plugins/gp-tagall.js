@@ -4,7 +4,7 @@ import PhoneNumber from 'awesome-phonenumber';
 const handler = async (m, { conn, participants, args }) => {
   const messaggio = args.join` `;
   const info = messaggio ? `»『 📢 』 \`MESSAGGIO:\` *${messaggio}*` : '';
-  let messaggi = `*─ׄ─ׅ─ׄ『 .𖥔 ݁ ˖🌍── .✦ 』─ׄ─ׅ─ׄ*\n\n${info ? info + '\n' : ''}\n╭  ┄ 𝅄  ۪꒰ \`BloodBot\` ꒱  ۟   𝅄 ┄\n`;
+  let messaggi = `*─ׄ─ׅ─ׄ『 .𖥔 ݁ ˖🌍── .✦ 』─ׄ─ׅ─ׄ*\n\n${info ? info + '\n' : ''}\n╭  ┄ 𝅄  ۪꒰ \`𝐄𝐑𝐑𝐎𝐑⁴⁰⁴\` ꒱  ۟   𝅄 ┄\n`;
   
   if (!global.emojiCache) global.emojiCache = new Map();
   if (!global.cacheStats) global.cacheStats = { hits: 0, misses: 0, errors: 0 };

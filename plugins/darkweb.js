@@ -1,6 +1,6 @@
 import { createCanvas } from 'canvas'
 
-const footer = '𝖇𝖑𝖔𝖔𝖉𝖇𝖔𝖙'
+const footer = '𝐄𝐑𝐑𝐎𝐑⁴⁰⁴'
 
 let handler = async (m, { conn, command, args, usedPrefix }) => {
     let who = m.sender
