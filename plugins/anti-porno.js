@@ -1,5 +1,3 @@
-// Plugin AntiPorno by github.com/axion-bot/axion-bot-Md
-
 import { downloadContentFromMessage } from '@realvare/baileys'
 import crypto from 'crypto'
 import fetch from 'node-fetch'
@@ -60,7 +58,7 @@ handler.before = async function (m, { conn, isAdmin, isOwner, isROwner, isBotAdm
       const fileHash = crypto.createHash('md5').update(mediaBuffer).digest('hex')
 
       if (global.db.data.nsfwCache[fileHash] === true) {
-        return await punishUser(conn, m, user, isBotAdmin, '𝐂𝐨𝐧𝐭𝐞𝐧𝐮𝐭𝐨 𝐍𝐒𝐅𝐖 𝐠𝐢à 𝐫𝐢𝐥𝐞𝐯𝐚𝐭𝐨')
+        return await punishUser(conn, m, user, isBotAdmin, '𝘗𝘈𝘊𝘒𝘌𝘛_𝘒𝘕𝘖𝘞𝘕_𝘕𝘚𝘍𝘞_𝘋𝘌𝘛𝘌𝘊𝘛𝘌𝘋')
       }
 
       if (global.db.data.nsfwCache[fileHash] === false) {
@@ -80,10 +78,7 @@ handler.before = async function (m, { conn, isAdmin, isOwner, isROwner, isBotAdm
       }
 
       const SIGHTENGINE_USER = global.APIKeys.sightengine_user
-const SIGHTENGINE_SECRET = global.APIKeys.sightengine_secret
-
-console.log('Sightengine user:', SIGHTENGINE_USER)
-console.log('Sightengine secret:', SIGHTENGINE_SECRET ? 'OK' : 'MANCANTE')
+      const SIGHTENGINE_SECRET = global.APIKeys.sightengine_secret
 
       if (!SIGHTENGINE_USER || !SIGHTENGINE_SECRET) return true
 
@@ -104,10 +99,7 @@ console.log('Sightengine secret:', SIGHTENGINE_SECRET ? 'OK' : 'MANCANTE')
 
       const result = await response.json()
 
-      if (result.status !== 'success') {
-        console.log('Errore API SightEngine:', result)
-        return true
-      }
+      if (result.status !== 'success') return true
 
       let raw = 0
       let partial = 0
@@ -137,7 +129,7 @@ console.log('Sightengine secret:', SIGHTENGINE_SECRET ? 'OK' : 'MANCANTE')
       global.db.data.nsfwCache[fileHash] = isHighRisk
 
       if (isHighRisk) {
-        return await punishUser(conn, m, user, isBotAdmin, '𝐂𝐨𝐧𝐭𝐞𝐧𝐮𝐭𝐨 𝐯𝐢𝐬𝐮𝐚𝐥𝐞 𝐍𝐒𝐅𝐖 𝐫𝐢𝐥𝐞𝐯𝐚𝐭𝐨')
+        return await punishUser(conn, m, user, isBotAdmin, '𝘊𝘖𝘕𝘛𝘌𝘕𝘜𝘛𝘌_𝘝𝘐𝘚𝘜𝘈𝘓𝘌_𝘕𝘚𝘍𝘞_𝘙𝘐𝘓𝘌𝘝𝘈𝘛𝘖')
       }
     } catch (e) {
       console.error('Errore antiporno:', e)
@@ -149,7 +141,7 @@ console.log('Sightengine secret:', SIGHTENGINE_SECRET ? 'OK' : 'MANCANTE')
   const nsfwKeywords = ['porn', 'xnxx', 'xvideos', 'xhamster', 'nude', 'pornhub']
 
   if (txt.includes('http') && nsfwKeywords.some(keyword => txt.includes(keyword))) {
-    return await punishUser(conn, m, user, isBotAdmin, '𝐋𝐢𝐧𝐤 𝐍𝐒𝐅𝐖 𝐫𝐢𝐥𝐞𝐯𝐚𝐭𝐨')
+    return await punishUser(conn, m, user, isBotAdmin, '𝘓𝘐𝘕𝘒_𝘕𝘚𝘍𝘞_𝘉𝘓𝘈𝘊𝘒𝘓𝘐𝘚𝘛𝘌𝘋')
   }
 
   return true
@@ -167,15 +159,22 @@ async function punishUser(conn, m, user, isBotAdmin, reason) {
   } catch {}
 
   if (user.warn < 3) {
-    await conn.sendMessage(m.chat, {
-      text: `╭━━━━━━━🔞━━━━━━━╮
-*✦ 𝐀𝐍𝐓𝐈 𝐏𝐎𝐑𝐍𝐎 ✦*
-╰━━━━━━━🔞━━━━━━━╯
+    let warnMsg = `
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘚𝘍𝘞_𝘐𝘕𝘛𝘗𝘜𝘛_𝘋𝘌𝘛𝘌𝘊𝘛𝘌𝘋 ☠️
+───────────────────────
+⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘗𝘜𝘙𝘎𝘌_𝘜𝘕𝘚𝘈𝘍𝘌_𝘔𝘌𝘋𝘐𝘈
+⎔ 𝘛𝘢𝘳𝘨𝘦𝘵_𝘏𝘰𝓼𝘵: @${senderTag}
+⎔ 𝘍𝘪𝘭𝘵𝘦𝘳_𝘓𝘰𝘨: ${reason}
+⎔ 𝘚𝘺𝘴_𝘞𝘢𝘳𝘯: *${user.warn}/3*
+───────────────────────
 
-*@${senderTag}*
-*⚠️ ${reason}*
-*📌 𝐀𝐯𝐯𝐢𝐬𝐨:* *${user.warn}/3*
-`,
+» 𝘈𝘝𝘝𝘐𝘚𝘜: Rilevato materiale esplicito o link a domini vietati dall'algoritmo di controllo. Il buffer multimediale è stato distrutto per preservare la stabilità della chat. Al terzo rilevamento l'istanza utente sarà terminata.
+
+͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
+_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝒕. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim()
+
+    await conn.sendMessage(m.chat, {
+      text: warnMsg,
       mentions: [m.sender]
     }, { quoted: m })
 
@@ -186,30 +185,42 @@ async function punishUser(conn, m, user, isBotAdmin, reason) {
   user.warnReasons = []
 
   if (!isBotAdmin) {
-    await conn.sendMessage(m.chat, {
-      text: `╭━━━━━━━🔞━━━━━━━╮
-*✦ 𝐀𝐍𝐓𝐈 𝐏𝐎𝐑𝐍𝐎 ✦*
-╰━━━━━━━🔞━━━━━━━╯
+    let failMsg = `
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘚𝘍𝘞_𝘓𝘐𝘕𝘌_𝘌𝘟𝘊𝘌𝘌𝘋𝘌𝘋 ☠️
+───────────────────────
+⎔ 𝘛𝘢𝘳𝘨𝘦𝘵_𝘏𝘰𝓼𝘵: @${senderTag}
+⎔ 𝘚𝘺𝘴_𝘞𝘢𝘳𝘯: *3/3*
+⎔ 𝘚𝘺𝘴_𝘈𝘤𝘵𝘪𝘰𝘯: 𝘒𝘐𝘊𝘒_𝘍𝘈𝘐𝘓𝘌𝘋_𝘕𝘖_𝘈𝘋𝘔𝘐𝘕
+───────────────────────
 
-*@${senderTag}*
-*⚠️ 𝐇𝐚 𝐫𝐚𝐠𝐠𝐢𝐮𝐧𝐭𝐨 𝟑/𝟑 𝐚𝐯𝐯𝐢𝐬𝐢*
-*❌ 𝐍𝐨𝐧 𝐩𝐨𝐬𝐬𝐨 𝐫𝐢𝐦𝐮𝐨𝐯𝐞𝐫𝐥𝐨: 𝐢𝐥 𝐛𝐨𝐭 𝐧𝐨𝐧 è 𝐚𝐝𝐦𝐢𝐧*
-`,
+» 𝘓𝘖𝘎: Soglia critica superata per invio di pacchetti pornografici non autorizzati. Impossibile purgare l'host: l'engine del bot non ha ottenuto i privilegi di amministratore (Sys_Admin) in questo settore.
+
+͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
+_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝒕. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim()
+
+    await conn.sendMessage(m.chat, {
+      text: failMsg,
       mentions: [m.sender]
     }, { quoted: m })
 
     return false
   }
 
-  await conn.sendMessage(m.chat, {
-    text: `╭━━━━━━━🔞━━━━━━━╮
-*✦ 𝐀𝐍𝐓𝐈 𝐏𝐎𝐑𝐍𝐎 ✦*
-╰━━━━━━━🔞━━━━━━━╯
+  let kickMsg = `
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘖𝘋𝘌_𝘛𝘌𝘙𝘔𝘐𝘕𝘈𝘛𝘌𝘋 ☠️
+───────────────────────
+⎔ 𝘛𝘢𝘳𝘨𝘦𝘵_𝘏𝘰𝓼𝘵: @${senderTag}
+⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘉𝘓𝘈𝘊𝘓𝘐𝘚𝘛𝘌𝘋_𝘈𝘎𝘌𝘕𝘛
+⎔ 𝘙𝘦𝘢𝘴𝘰𝘯_𝘊𝘰𝘥𝘦: 𝘕𝘚𝘍𝘞_𝘝𝘐𝘖𝘓𝘈𝘛𝘐𝘖𝘕_𝘓𝘐𝘔𝘐𝘛
+───────────────────────
 
-*@${senderTag}*
-*🚷 𝐑𝐢𝐦𝐨𝐬𝐬𝐨 𝐝𝐚𝐥 𝐠𝐫𝐮𝐩𝐩𝐨*
-*📌 𝐌𝐨𝐭𝐢𝐯𝐨:* *𝐂𝐨𝐧𝐭𝐞𝐧𝐮𝐭𝐢 𝐍𝐒𝐅𝐖 / 𝐩𝐨𝐫𝐧𝐨*
-`,
+» 𝘓𝘖𝘎: Interruzione forzata della connessione host. La reiterata iniezione di flussi erotici o nsfw ha forzato l'isolamento del nodo e la conseguente rimozione definitiva dall'infrastruttura del gruppo.
+
+͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
+_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝒕. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim()
+
+  await conn.sendMessage(m.chat, {
+    text: kickMsg,
     mentions: [m.sender]
   }, { quoted: m })
 
