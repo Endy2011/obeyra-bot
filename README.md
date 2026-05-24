@@ -1,20 +1,33 @@
-<div align="center" style="background-color: #000000; border: 3px solid #00FF00; border-radius: 10px; padding: 25px; font-family: 'Courier New', monospace; color: #00FF00; box-shadow: 0 0 20px #00FF00;">
+<div align="center" style="background-color: #000000; border: 3px solid #00FF00; border-radius: 10px; padding: 15px; font-family: 'Courier New', monospace; color: #00FF00;">
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=50&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=120&lines=⚠️+ERROR-BOT+⚠️;[SYSTEM_CRITICAL];FATAL_ERROR_DETECTED" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=45&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=120&lines=⚠️+ERROR-BOT+⚠️;[SYSTEM_CRITICAL];FATAL_ERROR_DETECTED" alt="Typing SVG" />
   </p>
 
-  <div style="width: 100%; overflow: hidden; background: #020f02; border: 1px dashed #00FF00; padding: 10px 0; line-height: 1.2;">
-    <marquee direction="left" scrollamount="12" style="font-size: 14px; font-weight: bold; color: #00FF00;">
-      01010100 01001000 01000101 _ BLD-BLOOD-BOT _ ERROR_DUMP_0x4F9B >>> / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
-    </marquee>
-    <marquee direction="right" scrollamount="15" style="font-size: 16px; font-weight: bold; color: #00FF00; margin-left: 50px;">
-      \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ SYSTEM_OVERRIDE_ACTIVE [EXE] 00FF00 <<<<<<<<<<<<<<<<<<<<
-    </marquee>
-    <marquee direction="left" scrollamount="9" style="font-size: 12px; color: #008800; margin-left: -30px;">
-      // ERROR-BLOOD // BYPASS_ANTI_BAN_5.0 // CORE_GLITCH_DEPLOYED // // // // // // // // // // // // // // // // // // // // //
-    </marquee>
-  </div>
+  <p align="center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="100%" style="background: #030c03; border: 1px solid #00FF00; border-radius: 5px;">
+      <style>
+        .matrix-text { font-family: 'Courier New', monospace; font-size: 13px; font-weight: bold; fill: #00FF00; }
+        .glitch-1 { animation: moveDiag 4s ease-in-out infinite alternate; }
+        .glitch-2 { animation: moveDiagRev 5s ease-in-out infinite alternate; }
+        @keyframes moveDiag {
+          0% { transform: translate(-20px, -10px); }
+          100% { transform: translate(30px, 15px); }
+        }
+        @keyframes moveDiagRev {
+          0% { transform: translate(20px, 10px); }
+          100% { transform: translate(-30px, -15px); }
+        }
+      </style>
+      <g transform="rotate(-8 300 90)">
+        <text x="20" y="30" class="matrix-text glitch-1">01010100 01001000 01000101 _ BLD-BLOOD-BOT _ ERROR_DUMP_0x4F9B ///////</text>
+        <text x="-40" y="60" class="matrix-text glitch-2">\\\\\\ SYSTEM_OVERRIDE_ACTIVE [EXE] 00FF00 &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</text>
+        <text x="10" y="90" class="matrix-text glitch-1">=== ERROR-BLOOD === BYPASS_ANTI_BAN_5.0 === GLITCH_CORE_ONLINE ===</text>
+        <text x="-10" y="120" class="matrix-text glitch-2">&gt;&gt;&gt;&gt;&gt;&gt; REWRITING_FILES... STATUS: OVERRIDDEN ////////////////////</text>
+        <text x="30" y="150" class="matrix-text glitch-1">00110001 01101111 01101111 01100100 [ROOT_ACCESS_GRANTED] 010101</text>
+      </g>
+    </svg>
+  </p>
 
   <p align="center">
     <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/green.png" width="100%">
@@ -27,7 +40,7 @@
   </p>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&size=25&pause=400&color=00FF00&center=true&vCenter=true&width=600&height=60&lines=STATUS:+OVERRIDDEN+💀;SECURITY:+BYPASSED+🔓;ROOT_ACCESS:+GRANTED" alt="Status SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&size=23&pause=400&color=00FF00&center=true&vCenter=true&width=600&height=60&lines=STATUS:+OVERRIDDEN+💀;SECURITY:+BYPASSED+🔓;ROOT_ACCESS:+GRANTED" alt="Status SVG" />
   </p>
 
   <p align="center">
@@ -35,10 +48,10 @@
   </p>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=ANALISI_LOG;MANIPOLAZIONE_DATI" alt="Descrizione" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=ANALISI_LOG;MANIPOLAZIONE_DATI" alt="Descrizione" />
   </p>
 
-  <div align="left" style="background-color: #051a05; padding: 15px; border-left: 5px solid #00FF00; margin: 20px 0; color: #00FF00;">
+  <div align="left" style="background-color: #051a05; padding: 15px; border-left: 5px solid #00FF00; margin: 20px 0; color: #00FF00; font-size: 14px;">
     <p><b>[i] ERROR-BOT</b> è un payload avanzato progettato per iniettarsi nell'ecosistema WhatsApp, bypassando le restrizioni standard e ottimizzando l'esecuzione dei processi.</p>
     <ul>
       <li><b>Kernel Glitch:</b> Basato su Node.js asincrono ad alte prestazioni, ottimizzato per l'esecuzione di script silenti.</li>
@@ -52,13 +65,12 @@
   </p>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=INIEZIONE_CODICE;GUIDA_INSTALLAZIONE" alt="Installazione" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=INIEZIONE_CODICE;GUIDA_INSTALLAZIONE" alt="Installazione" />
   </p>
 
-  <div align="left" style="color: #00FF00;">
+  <div align="left" style="color: #00FF00; font-size: 14px;">
     <h3>📟 PROTOCOLLO 1: TERMUX (Mobile Sandbox)</h3>
-    <p><i>Inietta i seguenti comandi nel terminale Android per forzare l'installazione:</i></p>
-    <pre style="background-color: #0a0a0a; border: 1px solid #00FF00; padding: 10px; color: #00FF00;">
+    <pre style="background-color: #0a0a0a; border: 1px solid #00FF00; padding: 10px; color: #00FF00; overflow-x: auto;">
 pkg update && pkg upgrade -y
 pkg install git nodejs -y
 git clone https://github.com/BLOOD212/BLD-BLOOD-BOT.git
@@ -69,8 +81,7 @@ npm start</pre>
     <br>
 
     <h3>🖥️ PROTOCOLLO 2: VPS ROOT (Server Override)</h3>
-    <p><i>Per il mantenimento persistente del bot all'interno del server ospite (Uptime 24/7):</i></p>
-    <pre style="background-color: #0a0a0a; border: 1px solid #00FF00; padding: 10px; color: #00FF00;">
+    <pre style="background-color: #0a0a0a; border: 1px solid #00FF00; padding: 10px; color: #00FF00; overflow-x: auto;">
 npm install -g pm2
 pm2 start index.js --name "error-bot"
 pm2 save
@@ -83,7 +94,7 @@ pm2 logs error-bot</pre>
   </p>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=MONITORAGGIO_RETE;DATA_MINING" alt="Analisi" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=MONITORAGGIO_RETE;DATA_MINING" alt="Analisi" />
   </p>
 
   <p align="center" style="margin-bottom: 15px;">
@@ -101,17 +112,17 @@ pm2 logs error-bot</pre>
   </p>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=MASTER_MIND;CONTATTI_CRITTOGRAFATI" alt="Staff" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&pause=500&color=00FF00&center=true&vCenter=true&width=700&height=80&lines=MASTER_MIND;CONTATTI_CRITTOGRAFATI" alt="Staff" />
   </p>
 
-  <div align="left" style="background-color: #051a05; padding: 15px; border-left: 5px solid #00FF00; color: #00FF00; margin-bottom: 20px;">
+  <div align="left" style="background-color: #051a05; padding: 15px; border-left: 5px solid #00FF00; color: #00FF00; margin-bottom: 20px; font-size: 14px;">
     <p>⚡ <b>Lead Dev:</b> [ERROR-BLOOD]</p>
     <p>⚡ <b>Uplink Diretto:</b> <a href="https://wa.me/393701330693" style="color: #00FF00; text-decoration: underline;">+39 370 133 0693</a></p>
     <p>⚡ <b>Dark Network:</b> <a href="https://whatsapp.com/channel/0029VbCIFecBadmZCxG8ug0W" style="color: #00FF00; text-decoration: underline;">ENTRA NEL CANALE UFFICIALE</a></p>
   </div>
 
   <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&size=20&pause=1500&color=00FF00&center=true&vCenter=true&width=650&height=60&lines=STIMULATE_THE_SYSTEM_WITH_A_STAR_⭐;SYSTEM_FAILURE_SUCCESSFUL..." alt="Thanks" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&size=18&pause=1500&color=00FF00&center=true&vCenter=true&width=650&height=60&lines=STIMULATE_THE_SYSTEM_WITH_A_STAR_⭐;SYSTEM_FAILURE_SUCCESSFUL..." alt="Thanks" />
   </p>
 
   <p align="center">
@@ -119,7 +130,7 @@ pm2 logs error-bot</pre>
   </p>
 
   <p align="center">
-    <b style="color: #00FF00; font-family: 'Courier New', monospace; font-size: 1.2em;">[!] © 2026 ERROR-BOT • Controlled by Blood [!]</b>
+    <b style="color: #00FF00; font-family: 'Courier New', monospace; font-size: 1.1em;">[!] © 2026 ERROR-BOT • Controlled by Blood [!]</b>
   </p>
 
 </div>
