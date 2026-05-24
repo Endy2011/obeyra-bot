@@ -56,14 +56,24 @@ async function addWarn(conn, m, target, reason, isBotAdmin) {
   user.warns[m.chat] += 1
   const warns = user.warns[m.chat]
   const tag = target.split('@')[0]
-  
-  const header = `⋆｡˚『 ╭ \`SISTEMA ANTILINK\` ╯ 』˚｡⋆`
-  const footer = `╰⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒`
 
   if (warns >= 3) {
     user.warns[m.chat] = 0
+    let kickMsg = `
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘛𝘌𝘙𝘔𝘐𝘕𝘈𝘛𝘌_𝘏𝘖𝘚𝘛 ☠️
+───────────────────────
+⎔ 𝘛𝘢𝘳𝘨𝘦𝘵_𝘏𝘰𝓼𝘵: @${tag}
+⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘓𝘐𝘔𝘐𝘛_𝘌𝘟𝘊𝘌𝘌𝘋𝘌𝘋
+⎔ 𝘚𝘺𝘴_𝘈𝘤𝘵𝘪𝘰𝘯: 𝘗𝘜𝘙𝘎𝘌_𝘌𝘟𝘌𝘊𝘜𝘛𝘌𝘋
+───────────────────────
+
+» 𝘓𝘖𝘎: L'host ha saturato la tolleranza del firewall iniettando collegamenti ipertestuali multipli non autorizzati. Il nodo viene rimosso definitivamente dal server del gruppo.
+
+͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
+_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim()
+
     await conn.sendMessage(m.chat, {
-      text: `${header}\n\n🚨 *TERMINAZIONE* @${tag}\n\n┃ ⛔ \`Violazione:\` Link multipli\n┃ ⚠️ \`Warn:\` *3/3*\n┃ 💀 \`Sanzione:\` *ESPULSIONE*\n\n${footer}`,
+      text: kickMsg,
       mentions: [target]
     }).catch(() => {})
 
@@ -73,8 +83,22 @@ async function addWarn(conn, m, target, reason, isBotAdmin) {
     return
   }
 
+  let warnMsg = `
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘓𝘐𝘕𝘒_𝘋𝘌𝘛𝘌𝘊𝘛𝘐𝘖𝘕 ☠️
+───────────────────────
+⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘜𝘕𝘈𝘜𝘛𝘏𝘖𝘙𝘐𝘡𝘌𝘋_𝘜𝘙𝘓_𝘍𝘖𝘜𝘕𝘋
+⎔ 𝘛𝘢𝘳𝘨𝘦𝘵_𝘏𝘰𝓼𝘵: @${tag}
+⎔ 𝘍𝘪𝘭𝘵𝘦𝘳_𝘓𝘰𝘨: ${reason.toUpperCase()}
+⎔ 𝘚𝘺𝘴_𝘞𝘢𝘳𝘯: *${warns}/3*
+───────────────────────
+
+» 𝘈𝘝𝘝𝘐𝘚Official: Rilevato pacchetto dati contenente stringhe o indirizzi IP di rete estranei al gruppo. Il payload è stato distrutto. Al terzo avviso l'host verrà bannato dal nodo locale.
+
+͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
+_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim()
+
   await conn.sendMessage(m.chat, {
-    text: `${header}\n\n🚨 *ATTENZIONE* @${tag}\n\n┃ ⛔ \`Violazione:\` *${reason}*\n┃ ⚠️ \`Warn:\` *${warns}/3*\n┃ 🚫 \`Azione:\` Messaggio rimosso\n\n${footer}`,
+    text: warnMsg,
     mentions: [target]
   }).catch(() => {})
 }
@@ -95,13 +119,13 @@ handler.before = async function (m, { conn, isAdmin, isBotAdmin, isOwner, isSam 
   const text = extractTextFromMessage(m, true)
   if (!containsLink(text)) return true
 
-  // Azione immediata: eliminazione
+  // Azione immediata: eliminazione del frame infetto
   if (isBotAdmin) {
     await conn.sendMessage(m.chat, { delete: m.key }).catch(() => {})
   }
-  
-  // Registrazione violazione
-  await addWarn(conn, m, m.sender, 'Link universale non autorizzato', !!isBotAdmin)
+
+  // Registrazione violazione nello stack dei dati utente
+  await addWarn(conn, m, m.sender, 'Link_Universal_Violation', !!isBotAdmin)
 
   return false
 }
