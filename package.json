@@ -60,7 +60,7 @@
     "moment-timezone": "^0.6.0",
     "msedge-tts": "^2.0.3",
     "node-cache": "^5.1.2",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "node-webpmux": "^3.2.1",
     "performance-now": "^2.1.0",
     "pino": "^10.1.0",

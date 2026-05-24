@@ -1,1 +1,327 @@
-{}
+{
+  "users": {
+    "393508664726@s.whatsapp.net": {
+      "exp": 459,
+      "euro": 10,
+      "muto": false,
+      "registered": false,
+      "name": "ⁱ ᵃᵐ 𝐁𝐋𝐎𝐎𝐃",
+      "age": -1,
+      "regTime": -1,
+      "banned": false,
+      "bank": 0,
+      "level": 0,
+      "firstTime": 1779637177361,
+      "spam": 0,
+      "messaggi": 71,
+      "messages": 108
+    },
+    "393892430108@s.whatsapp.net": {
+      "exp": 85,
+      "euro": 10,
+      "muto": false,
+      "registered": false,
+      "name": "GabWT333",
+      "age": -1,
+      "regTime": -1,
+      "banned": false,
+      "bank": 0,
+      "level": 0,
+      "firstTime": 1779637324947,
+      "spam": 0,
+      "messaggi": 10,
+      "messages": 18
+    },
+    "393508909956@s.whatsapp.net": {
+      "exp": 0,
+      "euro": 10,
+      "muto": false,
+      "registered": false,
+      "name": "คɭɭપƈٱกѻﻭﻉกѻ⁷̾蝎«ℭ𝔩𝔬𝔰𝔢»⁴⁰⁴",
+      "age": -1,
+      "regTime": -1,
+      "banned": false,
+      "bank": 0,
+      "level": 0,
+      "firstTime": 1779638055206,
+      "spam": 0,
+      "messaggi": 6,
+      "messages": 8
+    },
+    "393888929583@s.whatsapp.net": {
+      "exp": 17,
+      "euro": 10,
+      "muto": false,
+      "registered": false,
+      "name": "gab",
+      "age": -1,
+      "regTime": -1,
+      "banned": false,
+      "bank": 0,
+      "level": 0,
+      "firstTime": 1779638323158,
+      "spam": 0,
+      "messaggi": 23,
+      "messages": 25
+    }
+  },
+  "chats": {
+    "120363408734071686@g.us": {
+      "isBanned": false,
+      "welcome": false,
+      "goodbye": false,
+      "ai": false,
+      "vocali": false,
+      "antiporno": false,
+      "antioneview": false,
+      "autolevelup": false,
+      "antivoip": false,
+      "rileva": false,
+      "modoadmin": false,
+      "antiLink": false,
+      "antiLink2": false,
+      "reaction": false,
+      "antispam": false,
+      "expired": 0,
+      "users": {
+        "393508664726@s.whatsapp.net": {
+          "messages": 108
+        },
+        "393892430108@s.whatsapp.net": {
+          "messages": 18
+        },
+        "393508909956@s.whatsapp.net": {
+          "messages": 8
+        },
+        "393888929583@s.whatsapp.net": {
+          "messages": 25
+        }
+      },
+      "statsGiornaliere": {
+        "totali": 121,
+        "media": 4,
+        "utenti": {
+          "393508664726@s.whatsapp.net": {
+            "conteggio": 79,
+            "media": 0
+          },
+          "393892430108@s.whatsapp.net": {
+            "conteggio": 12,
+            "media": 0
+          },
+          "393508909956@s.whatsapp.net": {
+            "conteggio": 6,
+            "media": 0
+          },
+          "393888929583@s.whatsapp.net": {
+            "conteggio": 24,
+            "media": 0
+          }
+        },
+        "attiviOggi": 4,
+        "data": "24/05/2026"
+      },
+      "statsSettimanali": {
+        "totali": 121,
+        "media": 4,
+        "utenti": {
+          "393508664726@s.whatsapp.net": {
+            "conteggio": 79,
+            "media": 0
+          },
+          "393892430108@s.whatsapp.net": {
+            "conteggio": 12,
+            "media": 0
+          },
+          "393508909956@s.whatsapp.net": {
+            "conteggio": 6,
+            "media": 0
+          },
+          "393888929583@s.whatsapp.net": {
+            "conteggio": 24,
+            "media": 0
+          }
+        },
+        "attiviSettimana": 4,
+        "settimana": "2026-W22"
+      },
+      "antinuke": true,
+      "quizUsati": [
+        145
+      ],
+      "quizAttivo": {
+        "active": false,
+        "domanda": "In Left 4 Dead, what is the character Bill's last name?",
+        "opzioni": [
+          "Roberts",
+          "Fish",
+          "Stevenson",
+          "Overbeck"
+        ],
+        "corretta": "Overbeck",
+        "premio": 163,
+        "startAt": 1779646304550
+      }
+    }
+  },
+  "stats": {
+    "info-ping.js": {
+      "total": 7,
+      "success": 7,
+      "last": 1779646293790,
+      "lastSuccess": 1779646293790
+    },
+    "menu-menu.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779637820773,
+      "lastSuccess": 1779637820773
+    },
+    "menu-giochi.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779637833476,
+      "lastSuccess": 1779637833476
+    },
+    "info-speed.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779637843178,
+      "lastSuccess": 1779637843178
+    },
+    "codiceowner.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779637853647,
+      "lastSuccess": 1779637853647
+    },
+    "dl-play.js": {
+      "total": 2,
+      "success": 2,
+      "last": 1779638071522,
+      "lastSuccess": 1779638071522
+    },
+    "main-attiva-disattiva.js": {
+      "total": 3,
+      "success": 3,
+      "last": 1779638722316,
+      "lastSuccess": 1779638722316
+    },
+    "gp-p_d.js": {
+      "total": 4,
+      "success": 4,
+      "last": 1779638745627,
+      "lastSuccess": 1779638745627
+    },
+    "gp-delete.js": {
+      "total": 3,
+      "success": 3,
+      "last": 1779646316940,
+      "lastSuccess": 1779646316940
+    },
+    "gp-aperto-chiuso.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779638777966,
+      "lastSuccess": 1779638777966
+    },
+    "creatore-getplugin.js": {
+      "total": 3,
+      "success": 3,
+      "last": 1779639120393,
+      "lastSuccess": 1779639120393
+    },
+    "creatore-aggiorna.js": {
+      "total": 2,
+      "success": 2,
+      "last": 1779643972847,
+      "lastSuccess": 1779643972847
+    },
+    "giochi-indovinelli.js": {
+      "total": 2,
+      "success": 2,
+      "last": 1779643930120,
+      "lastSuccess": 1779643930120
+    },
+    "get-plugin.js": {
+      "total": 3,
+      "success": 3,
+      "last": 1779646293267,
+      "lastSuccess": 1779646293267
+    },
+    "quiz.js": {
+      "total": 1,
+      "success": 1,
+      "last": 1779646304640,
+      "lastSuccess": 1779646304640
+    }
+  },
+  "settings": {
+    "19704396999@s.whatsapp.net": {
+      "autoread": false,
+      "jadibotmd": false,
+      "antiPrivate": true,
+      "soloCreatore": false,
+      "registrazioni": true,
+      "status": 0
+    }
+  },
+  "statsGruppi": {
+    "totali": 121,
+    "media": 4,
+    "gruppi": {
+      "120363408734071686@g.us": {
+        "conteggio": 121,
+        "media": 0,
+        "utenti": {
+          "393508664726@s.whatsapp.net": {
+            "conteggio": 79,
+            "media": 0
+          },
+          "393892430108@s.whatsapp.net": {
+            "conteggio": 12,
+            "media": 0
+          },
+          "393508909956@s.whatsapp.net": {
+            "conteggio": 6,
+            "media": 0
+          },
+          "393888929583@s.whatsapp.net": {
+            "conteggio": 24,
+            "media": 0
+          }
+        }
+      }
+    },
+    "attiviOggi": 1
+  },
+  "statsGruppiSettimanali": {
+    "totali": 121,
+    "media": 4,
+    "gruppi": {
+      "120363408734071686@g.us": {
+        "conteggio": 121,
+        "media": 0,
+        "utenti": {
+          "393508664726@s.whatsapp.net": {
+            "conteggio": 79,
+            "media": 0
+          },
+          "393892430108@s.whatsapp.net": {
+            "conteggio": 12,
+            "media": 0
+          },
+          "393508909956@s.whatsapp.net": {
+            "conteggio": 6,
+            "media": 0
+          },
+          "393888929583@s.whatsapp.net": {
+            "conteggio": 24,
+            "media": 0
+          }
+        }
+      }
+    },
+    "attiviSettimana": 1
+  }
+}
