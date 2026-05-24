@@ -1,142 +1,106 @@
-import yts from 'yt-search';
-import fetch from 'node-fetch';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
+import yts from 'yt-search'
+import { exec } from 'child_process'
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import { promisify } from 'util'
+
+const execPromise = promisify(exec)
+
+global.playChoice = global.playChoice || {}
+const pendingLyrics = {}
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    let noText = `
-☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘐𝘕𝘝𝘈𝘓𝘐𝘋_𝘚𝘠𝘕𝘛𝘈𝘟 ☠️
-───────────────────────
-» 𝘚𝘺𝘴_𝘜𝘴𝘢𝘨𝘦: ${usedPrefix + command} [𝘕𝘰𝘮𝘦_𝘛𝘳𝘢𝘤𝘤𝘪𝘢 / 𝘜𝘙𝘓]`.trim();
-    return m.reply(noText);
-  }
+    
+    // --- COMANDO PLAY ---
+    if (command === "play") {
+        if (!text) return m.reply("🎧 *Inserisci il titolo del brano da cercare!*")
+        
+        const search = await yts(text)
+        const video = search.videos[0]
+        if (!video) return m.reply("❌ *Nessun risultato trovato.*")
 
-  try {
-    const search = await yts(text);
-    const vid = search.videos[0];
-    if (!vid) {
-      let noResult = `
-☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘖𝘋𝘌_𝘕𝘖𝘛_𝘍𝘖𝘜𝘕𝘋 ☠️
-───────────────────────
-» 𝘓𝘖𝘎: L'indice di ricerca non ha restituito alcuna corrispondenza per la stringa fornita. Riprovare con parametri differenti.`.trim();
-      return m.reply(noResult);
-    }
+        global.playChoice[m.sender] = video
 
-    const url = vid.url;
+        return conn.sendMessage(m.chat, {
+            text: `🎶 *${video.title}*
+            
+╭───────────────
+┃📺 𝐂𝐀𝐍𝐀𝐋𝐄: *${video.author.name}*
+┃⏱️ 𝐃𝐔𝐑𝐀𝐓𝐀: *${video.timestamp}*
+┃👁️ 𝐕𝐈𝐒𝐔𝐀𝐋: *${video.views.toLocaleString()}*
+╰───────────────
 
-    if (command === 'play') {
-        let infoMsg = `
-☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘔𝘌𝘋𝘐𝘈_𝘗𝘓𝘈𝘠𝘌𝘙 ☠️
-───────────────────────
-⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘚𝘛𝘙𝘌𝘈𝘔_𝘐𝘕𝘋𝘌𝘟_𝘙𝘌𝘈𝘋𝘠
-⎔ 𝘛𝘪𝘵𝘭𝘦_𝘓𝘰𝘨: ${vid.title}
-⎔ 𝘛𝘪𝘮𝘦_𝘚𝘵𝘢𝘮𝘱: ${vid.timestamp}
-───────────────────────
-
-» 𝘚𝘌𝘓𝘌𝘡𝘐𝘖𝘕𝘈_𝘍𝘜𝘕𝘡𝘐𝘖𝘕𝘌: Selezionare il formato del pacchetto dati da inserire nel buffer di download tramite i pulsanti sottostanti.
-
-͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞
-_𝘚𝘺𝘴𝘵𝘦System 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 𝘤𝘩𝘢𝘰𝘴._`.trim();
-
-        return await conn.sendMessage(m.chat, {
-            image: { url: vid.thumbnail },
-            caption: infoMsg,
-            footer: '☠️ ERROR⁴⁰⁴ // STREAM_CORE ☠️',
+*Cosa desideri scaricare?*`,
             buttons: [
-                { buttonId: `${usedPrefix}playaud ${url}`, buttonText: { displayText: '🎵 𝗔𝗨𝗗𝗜𝗢 (𝗠𝗣𝟯)' }, type: 1 },
-                { buttonId: `${usedPrefix}playvid ${url}`, buttonText: { displayText: '🎬 𝗩𝗜𝗗𝗘𝗢 (𝗠𝗣𝟰)' }, type: 1 }
+                { buttonId: ".play_audio", buttonText: { displayText: "🎧 Audio" }, type: 1 },
+                { buttonId: ".play_video", buttonText: { displayText: "🎥 Video" }, type: 1 }
             ],
-            headerType: 4
-        }, { quoted: m });
+            headerType: 1
+        }, { quoted: m })
     }
 
-    await conn.sendMessage(m.chat, { react: { text: "🩸", key: m.key } });
+    // --- LOGICA CONDIVISA ---
+    const video = global.playChoice[m.sender]
+    if (!video) return m.reply("❌ *La sessione è scaduta. Digita di nuovo .play*")
 
-    let downloadUrl = null;
-    const isAudio = command === 'playaud';
-
-    // Struttura di fallback API
-    const apiList = [
-        `https://api.boxiwan.my.id/api/download/ytmp${isAudio ? '3' : '4'}?url=${url}`,
-        `https://api.skizo.tech/api/y2mate?url=${url}`,
-        `https://api.tesshu.my.id/api/download/ytmp${isAudio ? '3' : '4'}?url=${url}`,
-        `https://api.botcahx.eu.org/api/dowloader/ytmp${isAudio ? '3' : '4'}?url=${url}&apikey=btch-932`
-    ];
-
-    for (let api of apiList) {
+    // --- COMANDO AUDIO ---
+    if (command === "play_audio") {
+        await m.reply(`⌛ *Sto elaborando l'audio di:* \n*${video.title}*`)
+        
+        const file = path.join(os.tmpdir(), `audio_${Date.now()}.mp3`)
+        
         try {
-            console.log(`[BLOOD] Tentativo su: ${api}`);
-            let res = await fetch(api);
-            let json = await res.json();
+            await execPromise(`yt-dlp -x --audio-format mp3 -o "${file}" ${video.url}`)
+            
+            await conn.sendMessage(m.chat, { 
+                audio: { url: file }, 
+                mimetype: 'audio/mpeg' 
+            }, { quoted: m })
+            
+            fs.unlinkSync(file)
+            
+            // Logica Testo
+            global.lyricsRequest = { [m.sender]: video.title }
+            pendingLyrics[m.sender] = setTimeout(() => {
+                delete pendingLyrics[m.sender]
+                delete global.lyricsRequest[m.sender]
+            }, 15000)
 
-            // Parsing flessibile dell'oggetto di risposta
-            downloadUrl = json.data?.url || json.result?.url || json.result?.dl || json.url || json.result?.link;
-
-            if (downloadUrl && typeof downloadUrl === 'string' && downloadUrl.startsWith('http')) break;
+            await conn.sendButton(m.chat, `📜 Vuoi il testo di *${video.title}*?`, "Hai 15 secondi", null, [['✅ Sì', `${usedPrefix}lyrics_yes`]], m)
+            delete global.playChoice[m.sender]
+            
         } catch (e) {
-            continue;
+            m.reply("❌ *Errore durante il download dell'audio.*")
         }
     }
 
-    if (!downloadUrl) {
-        throw new Error('SERVER_OFFLINE');
-    }
+    // --- COMANDO VIDEO ---
+    if (command === "play_video") {
+        if (video.seconds > 480) return m.reply("❌ *Video troppo lungo (Max 8 min)*")
 
-    const tmpDir = os.tmpdir();
-    const filePath = path.join(tmpDir, `blood_${Date.now()}.${isAudio ? 'mp3' : 'mp4'}`);
-
-    // Fetch stream simulando un User-Agent per aggirare i controlli del server
-    const response = await fetch(downloadUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' }
-    });
-
-    if (!response.ok) throw new Error('ERRORE_DOWNLOAD');
-    const buffer = await response.buffer();
-    fs.writeFileSync(filePath, buffer);
-
-    if (isAudio) {
-        await conn.sendMessage(m.chat, {
-            audio: fs.readFileSync(filePath),
-            mimetype: 'audio/mpeg',
-            fileName: `${vid.title}.mp3`
-        }, { quoted: m });
-    } else {
-        let videoCaption = `
-☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘍𝘌𝘛𝘊𝘏_𝘊𝘖𝘔𝘗𝘓𝘌𝘛𝘌𝘋 ☠️
-───────────────────────
-⎔ 𝘚𝘺𝘴_𝘊𝘰𝘥𝘦: 𝘝𝘐𝘋𝘌𝘖_𝘗𝘈𝘊𝘒𝘌𝘛_𝘚𝘜𝘊𝘊𝘌𝘚𝘚
-⎔ 𝘚𝘵𝘰𝘳𝘢𝘨𝘦: 𝘓𝘖𝘊𝘈𝘓_𝘞𝘐𝘗𝘌_𝘗𝘌𝘕𝘋𝘐𝘕𝘎
-───────────────────────
-» 𝘓𝘖𝘎: Pacchetto multimediale iniettato correttamente nel canale. File binario decodificato ed emesso con successo.`.trim();
+        await m.reply("🎬 *Download video in corso...*")
         
-        await conn.sendMessage(m.chat, {
-            video: fs.readFileSync(filePath),
-            mimetype: 'video/mp4',
-            caption: videoCaption
-        }, { quoted: m });
+        const raw = path.join(os.tmpdir(), `raw_${Date.now()}.mp4`)
+        const out = path.join(os.tmpdir(), `out_${Date.now()}.mp4`)
+
+        try {
+            await execPromise(`yt-dlp -f "bestvideo[height<=480]+bestaudio/best[height<=480]" --merge-output-format mp4 -o "${raw}" "${video.url}"`)
+            await execPromise(`ffmpeg -y -i "${raw}" -c:v libx264 -preset ultrafast -c:a aac -movflags +faststart "${out}"`)
+            
+            fs.unlinkSync(raw)
+            await conn.sendMessage(m.chat, { video: { url: out }, caption: `🎬 *${video.title}*` }, { quoted: m })
+            
+            fs.unlinkSync(out)
+            delete global.playChoice[m.sender]
+        } catch (e) {
+            m.reply("❌ *Errore durante il download del video.*")
+        }
     }
+}
 
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key } });
+handler.command = /^(play|play_audio|play_video)$/i
+handler.help = ['play']
+handler.tags = ['downloader']
 
-  } catch (e) {
-    console.error('DEBUG:', e);
-    await conn.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
-    
-    let errMsg = `
-☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘍𝘌𝘛𝘊𝘏_𝘍𝘈𝘐𝘓𝘌𝘋 ☠️
-───────────────────────
-⎔ 𝘚𝘺𝘴_𝘚𝘵𝘢𝘵𝗎𝗌: 𝘌𝘕𝘋𝘗𝘖𝘐𝘕𝘛𝘚_𝘖𝘍𝘍𝘓𝘐𝘕𝘌
-───────────────────────
-» 𝘓𝘖𝘎: Impossibile agganciare i nodi di hosting. Tutti i server della blacklist o i gateway di conversione API non rispondono. Fornire una query più stringente o utilizzare un link diretto per l'estrazione.`.trim();
-    m.reply(errMsg);
-  }
-};
-
-handler.help = ['play'];
-handler.tags = ['downloader'];
-handler.command = /^(play|playaud|playvid)$/i;
-
-export default handler;
+export default handler
