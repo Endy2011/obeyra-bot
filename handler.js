@@ -50,7 +50,7 @@ if (!global.cacheListenersSet) {
                     global.groupCache.set(update.id, metadata, { ttl: 300 })
                 } catch (e) {
                     if (!e?.message?.includes('not authorized') && !e?.message?.includes('chat not found') && !e?.message?.includes('not in group')) {
-                        console.error(`[ERRORE] Errore nell'aggiornamento cache su groups.update per ${update.id}:`, e)
+                        console.error(chalk.redBright(`[ERROR-BOT // CACHE_ERR] Fallimento aggiornamento su groups.update per ${update.id}:`), e)
                     }
                 }
             }
@@ -74,7 +74,7 @@ if (!global.pollListenerSet) {
                             })
                         }
                     } catch (e) {
-                        console.error('[ERRORE] Errore nel gestire poll update:', e)
+                        console.error(chalk.redBright('[ERROR-BOT // POLL_ERR] Errore nel gestire poll update:'), e)
                     }
                 }
             }
@@ -154,7 +154,7 @@ if (global.conn && global.conn.ws) {
                       nome = global.conn.getName(callerId) || 'Sconosciuto'
                       global.nameCache.set(callerId, nome);
                     }
-                    console.log(`[📞] chiamata in arrivo da ${numero} - ${nome}`)
+                    console.log(chalk.greenBright(`[📟 ERROR-BOT] Chiamata in arrivo intercettata da -> ${numero} - ${nome}`))
 
                     if (!global.db.data) await global.loadDatabase()
                     let settings = global.db.data?.settings?.[global.conn.user.jid]
@@ -177,24 +177,24 @@ if (global.conn && global.conn.ws) {
                     user.callCount = (user.callCount || 0) + 1
                     try {
                         await global.conn.rejectCall(uniqueCallId, callerId)
-                        console.log(`[📞] chiamata di ${numero} - ${nome} rifiutata`)
+                        console.log(chalk.red(`[💀 BYPASS_CALL] Chiamata di ${numero} - ${nome} respinta e terminata.`))
                         if (user.callCount >= 3) {
                             user.banned = true
                             user.bannedReason = 'Troppi tentativi di chiamata mongoloide tagliati'
-                            const msg = `🚫 Quanto puoi essere sfigato per spammare di call smh.`
+                            const msg = `⚠️ **[SYSTEM_FIREWALL]** // Sei stato bannato dal core di ERROR-BOT per spam di chiamate.`
                             await global.conn.sendMessage(toJid(callerId), { text: msg })
                         } else {
-                            const msg = `🚫 Chiamata rifiutata automaticamente, non chiamare il bot.`
+                            const msg = `⚠️ **[ANTIVIPER_SHIELD]** // Chiamata interrotta automaticamente. I protocolli di sicurezza vietano le call.`
                             await global.conn.sendMessage(toJid(callerId), { text: msg })
                         }
                     } catch (err) {
-                        console.error('[ERRORE] Errore nel gestire la chiamata:', err)
+                        console.error(chalk.red('[ERROR-BOT // VOIP_ERR] Impossibile terminare la chiamata:', err))
                         global.processedCalls.delete(uniqueCallId)
                     }
                 }
             }
         } catch (e) {
-            console.error('[ERRORE] Errore generale gestione chiamata:', e)
+            console.error(chalk.red('[ERROR-BOT // CRITICAL_VOIP] Errore fatale nella gestione chiamate:', e))
         }
     })
 }
@@ -233,7 +233,7 @@ export async function participantsUpdate({ id, participants, action }) {
             }
         }
     } catch (e) {
-        console.error(`[ERRORE] Errore in participantsUpdate per ${id}:`, e)
+        console.error(chalk.red(`[ERROR-BOT // OVERRIDE_ERR] Errore in participantsUpdate per ${id}:`), e)
     }
 }
 
@@ -251,7 +251,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
     m.message = editedMessage;
     m.text = editedMessage.conversation || editedMessage.extendedTextMessage?.text || '';
     m.mtype = Object.keys(editedMessage)[0];
-    console.log(`[EDIT] Messaggio ${key.id} modificato in ${key.remoteJid}`);
+    console.log(chalk.yellow(`[⚙️ GLITCH_EDIT] Rilevata modifica pacchetto ${key.id} nel canale ${key.remoteJid}`));
 }
     m = smsg(this, m, global.store)
     if (!m || !m.key || !m.chat || !m.sender) return
@@ -273,7 +273,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                     if (metadata) global.groupCache.set(chatId, metadata, { ttl: 300 })
                 }
                 if (!metadata) {
-                    console.error('[ERRORE] Nessun metadato del gruppo disponibile per un aggiornamento sicuro')
+                    console.error(chalk.red('[ERROR-BOT // METADATA_CRITICAL] Metadati assenti per un aggiornamento sicuro dei nodi.'))
                     return this.originalGroupParticipantsUpdate.call(this, chatId, users, action)
                 }
 
@@ -290,7 +290,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
 
                 return this.originalGroupParticipantsUpdate.call(this, chatId, correctedUsers, action)
             } catch (e) {
-                console.error('[ERRORE] Errore in safeGroupParticipantsUpdate:', e)
+                console.error(chalk.red('[ERROR-BOT // SYSTEM_ERR] Errore fatale in safeGroupParticipantsUpdate:'), e)
                 throw e
             }
         }
@@ -326,7 +326,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                     eventHandled = true
                 }
             } catch (e) {
-                console.error('[ERRORE] Errore nel gestire eventResponseMessage:', e)
+                console.error(chalk.red('[ERROR-BOT // COMPONENT_ERR] Errore in eventResponseMessage:'), e)
             }
         }
 
@@ -350,7 +350,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                         }
                     }
                 } catch (e) {
-                    console.error('❌ Errore parsing nativeFlowResponse:', e)
+                    console.error(chalk.red('[ERROR-BOT // FLOW_PARSE_ERR] Errore nel parsing di nativeFlowResponse:'), e)
                 }
             }
         }
@@ -517,7 +517,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                         __filename
                     })
                 } catch (e) {
-                    console.error('[ERRORE] Errore in plugin.all:', e)
+                    console.error(chalk.red('[ERROR-BOT // HOOK_ERR] Fallimento in plugin.all:'), e)
                 }
             }
 
@@ -613,14 +613,14 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                 }
 
                 if (user.muto && !isROwner && !isOwner) {
-                    await this.sendMessage(m.chat, { text: `🚫 Hai il cazzo di blood in bocca,non puoi usare i comandi.` }, { quoted: m }).catch(e => console.error('[ERRORE] Errore nell\'invio del messaggio:', e))
+                    await this.sendMessage(m.chat, { text: `⚠️ **[MUTED_USER]** // Hai il cazzo di blood in bocca, non puoi usare i comandi.` }, { quoted: m }).catch(e => console.error('[ERRORE] Errore nell\'invio del messaggio:', e))
                     return
                 }
 
                 const ignoredGlobally = global.ignoredUsersGlobal.has(normalizedSender)
                 const ignoredInGroup = m.isGroup && global.ignoredUsersGroup[m.chat]?.has(normalizedSender)
                 if ((ignoredGlobally || ignoredInGroup) && !isROwner) {
-                    await this.sendMessage(m.chat, { text: `🚫 Ma chi ti ha dato il permesso di provare sto comando, mongoplettico.` }, { quoted: m }).catch(e => console.error('[ERRORE] Errore nell\'invio del messaggio:', e))
+                    await this.sendMessage(m.chat, { text: `⚠️ **[BLOCKED_NODE]** // Richiesta rifiutata. Permessi non concessi sul terminale.` }, { quoted: m }).catch(e => console.error('[ERRORE] Errore nell\'invio del messaggio:', e))
                     return
                 }
 
@@ -629,7 +629,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                 if (user.banned && !isROwner && name !== 'creatore-banuser.js') {
                     if (user.antispam > 2) return
                     await this.sendMessage(m.chat, {
-                        text: `🚫 *Blood ti ha tolto il privileggio di usare il bot*.\n\n${user.bannedReason ? `🥀 Motivo: ${user.bannedReason}` : `🥀 Blood non ha bisogno di motivazioni`}\n\n⚠️ Contatta il creatore con *${usedPrefix}segnala* per problemi.`
+                        text: `⚠️ **[DENIED_HOST]**\n\n*Blood ti ha disconnesso dall'ecosistema di ERROR-BOT*.\n\n${user.bannedReason ? `🥀 Glitch: ${user.bannedReason}` : `🥀 Blood non ha bisogno di motivazioni.`}\n\n📟 Invia *${usedPrefix}segnala* se ritieni si tratti di un errore di tracciamento.`
                     }, { quoted: m }).catch(e => console.error('[ERRORE] Errore nell\'invio del messaggio:', e))
                     user.antispam++
                     return
@@ -653,10 +653,10 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
 
                     if (groupData.count > 8) {
                         groupData.isSuspended = true
-                        await this.reply(m.chat, `『 ⚠️ 』 \`Anti-spam comandi\`\n\n> Rilevati troppi comandi in un minuto, aspettate \`15 secondi\` prima di riutilizzare i comandi.\n\n*ℹ️ Gli admin del gruppo sono esenti da questo limite.*`, m).catch(e => console.error('[ERRORE] Errore nell\'invio della risposta:', e))
+                        await this.reply(m.chat, `📟 **[OVERLOAD_SHIELD]** // \`Anti-spam attivo\`\n\n> Traffico comandi troppo intenso sul server. Esecuzione interrotta per \`15 secondi\` per deframmentare la cache.\n\n*🟢 Gli amministratori bypassano questo protocollo.*`, m).catch(e => console.error('[ERRORE] Errore nell\'invio della risposta:', e))
                         setTimeout(() => {
                             delete global.groupSpam[m.chat]
-                            console.log(`[Anti-Spam] Comandi riattivati per il gruppo: ${m.chat}`)
+                            console.log(chalk.cyan(`[Anti-Spam] Canale pulito. Ripristinati comandi nel gruppo: ${m.chat}`))
                         }, 15000)
                         return
                     }
@@ -716,7 +716,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                 }
 
                 if (!isPrems && plugin.euro && user.euro < plugin.euro) {
-                    await this.reply(m.chat, `Niente più soldini, stupido poraccio`, m, null, global.fake).catch(e => console.error('[ERRORE] Errore nella risposta:', e))
+                    await this.reply(m.chat, `📟 **[INSUFFICIENT_FUNDS]** // Transazione fallita. Crediti non sufficienti sul wallet.`, m, null, global.fake).catch(e => console.error('[ERRORE] Errore nella risposta:', e))
                     continue
                 }
 
@@ -750,9 +750,9 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                     if (!isPrems) m.euro = plugin.euro || false
                 } catch (e) {
                     m.error = e
-                    console.error(`[ERRORE] Errore nell'esecuzione del plugin per la chat ${m.chat}, mittente ${m.sender}:`, e)
+                    console.error(chalk.red(`[ERROR-BOT // CORE_ERR] Eccezione riscontrata nella chat ${m.chat} da ${m.sender}:`), e)
                     if (e && e.message && e.message.includes('rate-overlimit')) {
-                        console.warn('[AVVISO] Rate limit raggiunto, ritento dopo 2 secondi...')
+                        console.warn(chalk.yellow('[AVVISO] Rate limit raggiunto sul canale WhatsApp. Ritento injector tra 2000ms...'))
                         await delay(2000)
                     }
                     let textErr = format(e)
@@ -762,18 +762,18 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
                         try {
                             await plugin.after.call(this, m, extra)
                         } catch (e) {
-                            console.error('[ERRORE] Errore in plugin.after:', e)
+                            console.error(chalk.red('[ERROR-BOT // INJECT_ERR] Errore in plugin.after:'), e)
                         }
                     }
                     if (m.euro) {
-                        await this.reply(m.chat, `\`Hai utilizzato *${+m.euro}*\``, m, null, global.rcanal).catch(e => console.error('[ERRORE] Errore nell\'invio della risposta:', e))
+                        await this.reply(m.chat, `\`📟 Payload eseguito. Caricati *${+m.euro}* crediti dal core.\``, m, null, global.rcanal).catch(e => console.error('[ERRORE] Errore nell\'invio della risposta:', e))
                     }
                 }
                 break
             }
         }
     } catch (e) {
-        console.error(`[ERRORE] Errore nel handler per la chat ${m.chat}, mittente ${m.sender}:`, e)
+        console.error(chalk.red(`[ERROR-BOT // INTERCEPTOR_CRITICAL] Fallimento fatale nel modulo handler per ${m.chat}:`), e)
     } finally {
         if (m && user && user.muto && !m.fromMe) {
             await this.sendMessage(m.chat, { delete: m.key }).catch(e => console.error('[ERRORE] Errore nell\'eliminazione del messaggio:', e))
@@ -814,7 +814,7 @@ if (m.message?.protocolMessage?.type === 'MESSAGE_EDIT') {
         try {
             if (!global.opts['noprint'] && m) await (await import(`./lib/print.js`)).default(m, this)
         } catch (e) {
-            console.error('[ERRORE] Errore in print:', e)
+            console.error(chalk.red('[ERROR-BOT // PRINT_ERR] Errore nella visualizzazione log a schermo:'), e)
         }
 
         let settingsREAD = global.db.data.settings[this.user.jid] || {}
@@ -838,22 +838,18 @@ global.dfail = async (type, m, conn) => {
     const nome = m.pushName || 'sam'
     const etarandom = Math.floor(Math.random() * 21) + 13
         const msg = {
-        sam: '🔒 𝗔𝗖𝗖𝗘𝗦𝗦𝗢 𝗥𝗜𝗦𝗘𝗥𝗩𝗔𝗧𝗢\n Solo blood puo usare sto comando.',
-        rowner: '👑 𝗕𝗢𝗦𝗦\nFratello solo i miei friend possono usare sto comando.',
-        owner: '🛡️ 𝗖𝗔𝗣𝗢\nSolo i Capo possono eseguire questo comando, mbàre.',
-        mods: '⚙️ 𝗦𝗢𝗦𝗧𝗢𝗖𝗔𝗣𝗢\nSolo i sottocapi possono ordinarlo.',
-        premium: '💎 𝗙𝗜𝗗𝗘𝗟𝗜𝗧À\nMbare, serve lo status Premium per usare questo potere.',
-        group: '👥 𝗙AMIGLIA\nQuesto comando funziona solo nel gruppo.',
-        private: '📩 𝗙ACCENDA PRIVATA\nParla direttamente con il Boss, mbare.',
-        admin: '🛠️ 𝗔𝗜𝗨𝗧𝗔𝗡𝗧𝗘\nSolo gli aiutanti del clan possono dare quest’ordine.',
-        botAdmin: '🤖 𝗩𝗜𝗚𝗜𝗟𝗘\nIl bot deve avere poteri da Admin per agire.',
-        unreg: `📛 𝗡𝗨𝗢𝗩𝗢 𝗣𝗜𝗖𝗖𝗜𝗢𝗧𝗧𝗢
-Mbare, prima ti devi registrrare.
-
-Esempio:
-.reg ${nome} ${etarandom}`,
-        restrict: '🚫 𝗭𝗢𝗡𝗔 𝗖𝗛𝗜𝗨𝗦𝗔\nFunzione momentaneamente bloccata.',
-        disabled: '🚫 𝗢𝗥𝗗𝗜𝗡𝗘 𝗦𝗢𝗦𝗣𝗘𝗦𝗢\nQuesto comando è stato disattivato.'
+        sam: '🔒 **[OVERRIDE_RESTRICTED]**\n\n> Accesso negato dal sistema. Solo il modulo principale Blood può lanciare questo exploit.',
+        rowner: '👑 **[ROOT_PRIVILEGES_REQUIRED]**\n\n> Livello di autenticazione non sufficiente. Comando riservato alla cerchia principale dei client configurati.',
+        owner: '🛡️ **[MASTER_ACCESS_ONLY]**\n\n> Restrizione firewall rilevata. Solo gli sviluppatori accreditati nel file di configurazione possono procedere.',
+        mods: '⚙️ **[MODERATOR_BYPASS_FAILED]**\n\n> Richiesta respinta. Questo payload necessita di privilegi intermedi di livello Sottocapo.',
+        premium: '💎 **[PREMIUM_LICENSE_REQUIRED]**\n\n> Funzionalità criptata. È richiesto l\'aggiornamento del tuo nodo utente allo stato Premium.',
+        group: '👥 **[LOCAL_NETWORK_ONLY]**\n\n> Errore di reindirizzamento. Questo pacchetto dati può essere iniettato solo all\'interno dei canali di un gruppo.',
+        private: '📩 **[PRIVATE_UPLINK_ONLY]**\n\n> Protocollo sicuro attivato. Comunica direttamente sulla console privata per completare l\'azione.',
+        admin: '🛠️ **[ADMIN_CLEARANCE_REQUIRED]**\n\n> Rifiuto del server. Operazione esclusiva per gli amministratori autorizzati del gruppo.',
+        botAdmin: '🤖 **[BOT_ELEVATION_MISSING]**\n\n> Impossibile procedere. ERROR-BOT richiede di essere elevato ad Amministratore per manipolare i parametri del gruppo.',
+        unreg: `📛 **[UNREGISTERED_HOST]**\n\n> Connessione rifiutata. Il tuo account non è censito nel database centrale di ERROR-BOT.\n\n📟 Per registrarti, invia il comando:\n\`.reg ${nome} ${etarandom}\``,
+        restrict: '🚫 **[MODULE_DISABLED]**\n\n> Controllo fallito. Questa estensione è stata disattivata o congelata temporaneamente.',
+        disabled: '🚫 **[COMMAND_TERMINATED]**\n\n> Questo script è disattivato a livello globale.'
     }[type]
     if (msg) {
         conn.reply(m.chat, msg, m, global.rcanal).catch(e => console.error('[ERRORE] Errore in dfail:', e))
@@ -867,5 +863,5 @@ function pickRandom(list) {
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => { 
     unwatchFile(file)     
-    console.log(chalk.bgHex('#3b0d95')(chalk.white.bold("File: 'handler.js' Aggiornato")))
+    console.log(chalk.bgHex('#00FF00')(chalk.black.bold(" [📟 SYSTEM_ALERT] // File: 'handler.js' aggiornato ed iniettato con successo nel core. ")))
 })
