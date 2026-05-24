@@ -16,8 +16,8 @@ const moduleCache = new NodeCache({ stdTTL: 300 });
 global.sam = ['393701330693'];
 global.owner = [
   ['393701330693', 'blood', true],
-  ['393508664726', 'blood', true],
-  ['xxxxxxxxxxxx', 'xxxxx', true],
+  ['393508664726', 'blood3', true],
+  ['393508909959', 'riky', true],
   ['xxxxxxxxxxxx', 'xxxxx', true],
   ['xxxxxxxxxxxx', 'xxxxx', true],
   ['xxxxxxxxxxxx', 'xxxxx', true]
@@ -28,12 +28,12 @@ global.prems = ['xxxxxxxxxxx', 'xxxxxxxxxxx', 'xxxxxxxxxxx']
 
 /*⭑⭒━━━✦❘༻🩸 INFO BOT 🕊️༺❘✦━━━⭒⭑*/
 
-global.nomepack = 'BLD-BLOOD'
-global.nomebot = 'BLD-BLOOD'
-global.wm = 'BLD-BLOOD'
+global.nomepack = 'ERROR'
+global.nomebot = 'ERROR'
+global.wm = 'ERROR'
 global.autore = 'BLOOD'
 global.dev = 'BLOOD'
-global.testobot = `BLD-BLOOD`
+global.testobot = `ERROR`
 global.versione = pkg.version
 global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per contattare lo sviluppatore. contatto diretto:+39 370 133 0693'
 
@@ -41,7 +41,7 @@ global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per co
 
 global.repobot ='https://wa.me/393701330693'
 global.gruppo = 'https://chat.whatsapp.com/KdLKg5DoZ2CGrNlbqJRdV9'
-global.insta = 'https://www.instagram.com/bloodvelith'
+global.insta = 'https://www.instagram.com/blood333wz'
 
 /*⭑⭒━━━✦❘༻ MODULI ༺❘✦━━━⭒⭑*/
 
