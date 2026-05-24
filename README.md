@@ -5,28 +5,7 @@
   </p>
 
   <p align="center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="100%" style="background: #030c03; border: 1px solid #00FF00; border-radius: 5px;">
-      <style>
-        .matrix-text { font-family: 'Courier New', monospace; font-size: 13px; font-weight: bold; fill: #00FF00; }
-        .glitch-1 { animation: moveDiag 4s ease-in-out infinite alternate; }
-        .glitch-2 { animation: moveDiagRev 5s ease-in-out infinite alternate; }
-        @keyframes moveDiag {
-          0% { transform: translate(-20px, -10px); }
-          100% { transform: translate(30px, 15px); }
-        }
-        @keyframes moveDiagRev {
-          0% { transform: translate(20px, 10px); }
-          100% { transform: translate(-30px, -15px); }
-        }
-      </style>
-      <g transform="rotate(-8 300 90)">
-        <text x="20" y="30" class="matrix-text glitch-1">01010100 01001000 01000101 _ BLD-BLOOD-BOT _ ERROR_DUMP_0x4F9B ///////</text>
-        <text x="-40" y="60" class="matrix-text glitch-2">\\\\\\ SYSTEM_OVERRIDE_ACTIVE [EXE] 00FF00 &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</text>
-        <text x="10" y="90" class="matrix-text glitch-1">=== ERROR-BLOOD === BYPASS_ANTI_BAN_5.0 === GLITCH_CORE_ONLINE ===</text>
-        <text x="-10" y="120" class="matrix-text glitch-2">&gt;&gt;&gt;&gt;&gt;&gt; REWRITING_FILES... STATUS: OVERRIDDEN ////////////////////</text>
-        <text x="30" y="150" class="matrix-text glitch-1">00110001 01101111 01101111 01100100 [ROOT_ACCESS_GRANTED] 010101</text>
-      </g>
-    </svg>
+    <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&size=14&keyframes=true&vCenter=true&center=true&width=700&height=160&color=00FF00&lines=+01010100+01001000+01000101+_+BLD-BLOOD-BOT+_+ERROR_DUMP_0x4F9B+%2F%2F%2F%2F%2F%2F%2F;%5C%5C%5C%5C%5C%5C+SYSTEM_OVERRIDE_ACTIVE+%5BEXE%5D+00FF00+%3C%3C%3C%3C%3C%3C%3C%3C%3C%3C%3C%3C%3C%3C;===+ERROR-BLOOD+===+BYPASS_ANTI_BAN_5.0+===+GLITCH_CORE_ONLINE;%3E%3E%3E%3E%3E%3E+REWRITING_FILES...+STATUS%3A+OVERRIDDEN+%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F;00110001+01101111+01101111+01100100+%5BROOT_ACCESS_GRANTED%5D+010101" alt="Hacker Flow" />
   </p>
 
   <p align="center">
