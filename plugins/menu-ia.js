@@ -1,8 +1,15 @@
-import { xpRange } from '../lib/levelling.js'
+import { promises as fs } from 'fs'
 import { join } from 'path'
+import { xpRange } from '../lib/levelling.js'
+import moment from 'moment-timezone'
+import os from 'os'
 
-// --- PERCORSO IMMAGINE ---
-const localImg = join(process.cwd(), 'menu-ia.jpeg');
+// Configurazione immagini random (tutte .jpeg)
+const menuImages = [
+  './menu-1.jpeg',
+  './menu-2.jpeg',
+  './menu-3.jpeg'
+]
 
 const emojicategoria = {
   iatesto: '📝',
@@ -11,35 +18,33 @@ const emojicategoria = {
 }
 
 let tags = {
-  'iatesto': '𝐈𝐀 𝐓𝐄𝐒𝐓𝐎',
-  'iaaudio': '𝐈𝐀 𝐀𝐔𝐃𝐈𝐎',
-  'iaimmagini': '𝐈𝐀 𝐈𝐌𝐌𝐀𝐆𝐈𝐍𝐈'
+  'iatesto': '𝘚𝘠𝘚𝘛𝘌𝘔_𝘛𝘌𝘟𝘛_𝘊𝘖𝘙𝘌',
+  'iaaudio': '𝘚𝘠𝘚𝘛𝘌𝘔_𝘈𝘜𝘋𝘐𝘖_𝘊𝘖𝘙𝘌',
+  'iaimmagini': '𝘚𝘠𝘚𝘛𝘌𝘔_𝘐𝘔𝘈𝘎𝘌_𝘊𝘖𝘙𝘌'
 }
 
 const defaultMenu = {
   before: `
-┎━━━━━━━━━━━━━━━━━━━┑
-┃   ✧  𝐁𝐋𝐃 - 𝐈𝐍𝐓𝐄𝐋𝐋𝐈𝐆𝐄𝐍𝐂𝐄  ✧   ┃
-┖━━━━━━━━━━━━━━━━━━━┙
-┌───────────────────┐
-  👤 𝚄𝚜𝚎𝚛: %name
-  🏆 𝙻𝚟𝚕: %level
-  🪐 𝚄𝚙𝚝𝚒𝚖𝚎: %uptime
-  👥 𝚄𝚜𝚎𝚛𝚜: %totalreg
-└───────────────────┘
+☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘌𝘜𝘙𝘈𝘓 ☠️
+───────────────────────
+⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: %name
+⎔ 𝘚𝘛𝘓_𝘓𝘝𝘓: %level
+⎔ 𝘓𝘪𝘧ｪ_𝘚𝘪𝘨𝘯𝘢𝘭: %uptime
+⎔ 𝘎𝘩𝘰𝘴𝘵_𝘜𝘴𝘦𝘳𝘴: %totalreg
+───────────────────────
 
-*〘 ᴀᴄᴄᴇssɪɴɢ ɴᴇᴜʀᴀʟ ɴᴇᴛᴡᴏʀᴋ... 〙*
+» 𝘈𝘊𝘊𝘌𝘚𝘚𝘖 𝘙𝘌𝘛𝘌 𝘕𝘌𝘜𝘙𝘈𝘓𝘌 𝘐𝘕 𝘊𝘎𝘙𝘚𝘖...
 `.trimStart(),
-  header: '┍━━━〔 %category 〕━━━┑',
-  body: '┇ %emoji  *%cmd*',
-  footer: '┕━━━━━──ׄ──ׅ──ׄ──━━━━━┙\n',
-  after: `_ꜱʏꜱᴛᴇᴍ ɪᴀ ᴏᴘᴇʀᴀᴛɪᴏɴᴀʟ_`
+  header: 'ョ ── %category 𪚥',
+  body: '    ⤿ %emoji %cmd ╳',
+  footer: '͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞\n',
+  after: `_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝗲 μ𝘩𝘢𝘰𝘴._`
 }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
   try {
     await conn.sendPresenceUpdate('composing', m.chat)
-    
+
     let { level = 0, role = 'User' } = global.db.data.users[m.sender] || {}
     let name = await conn.getName(m.sender) || 'Utente'
     let uptime = clockString(process.uptime() * 1000)
@@ -81,24 +86,40 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
 
     let text = _text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join('|')})`, 'g'), (_, name) => '' + replace[name])
 
-    await m.react('🧠')
+    await m.react('💥')
 
-    // --- INVIO CON IMMAGINE E CONTEXT GRUPPO ---
+    // Estrazione random dell'immagine .jpeg
+    let randomImg = menuImages[Math.floor(Math.random() * menuImages.length)]
+    let imageBuffer = null
+    
+    try {
+      imageBuffer = await fs.readFile(randomImg)
+    } catch (e) {
+      console.log(`⚠️ Immagine ${randomImg} non trovata, tento il recupero...`)
+      for (let img of menuImages) {
+        try {
+          imageBuffer = await fs.readFile(img)
+          break
+        } catch (err) {}
+      }
+    }
+
+    // Invio con immagine locale randomizzata e layout modificato
     await conn.sendMessage(m.chat, {
-      image: { url: localImg },
+      ...(imageBuffer ? { image: imageBuffer } : {}),
       caption: text.trim(),
       contextInfo: {
         mentionedJid: [m.sender],
         forwardedNewsletterMessageInfo: {
           newsletterJid: '120363232743845068@newsletter',
-          newsletterName: "✧ 𝙱𝙻𝙳-𝙱𝙾𝚃 𝙸𝙽𝚃𝙴𝙻𝙻𝙸𝙶𝙴𝙽𝙲𝙴 ✧"
+          newsletterName: "☠️ ᴇʀʀᴏʀ⁴⁰⁴ // ɴᴇᴜʀᴀʟ ɴᴇᴛ ☠️"
         }
       }
     }, { quoted: m })
 
   } catch (e) {
     console.error(e)
-    conn.reply(m.chat, '❌ Errore nel caricamento del modulo IA.', m)
+    conn.reply(m.chat, '❌ 𝘍𝘈𝘛𝘈𝘓_𝘌𝘙𝘙𝘖𝘙: Impossibile mappare la matrice neurale IA.', m)
   }
 }
 
