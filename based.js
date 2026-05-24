@@ -132,6 +132,7 @@ const question = (t) => {
 let opzione;
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) {
     do {
+        // STYLE CALIBRATO: IDENTICO MA DRITTO AL MILLIMETRO
         const errRed = chalk.hex('#FF2A2A').bold;
         const errDimRed = chalk.hex('#990000');
         const errDark = chalk.hex('#444444');
@@ -139,6 +140,7 @@ if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) 
         const errGreen = chalk.hex('#00FF66');
         const errCyan = chalk.hex('#00E5FF');
 
+        // Bordi fisse di uguale lunghezza per evitare sfasamenti su Termux/Linux
         const bTop = errRed('◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢ SYSTEM INJECTION GATEWAY ◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥');
         const bBot = errRed('◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥◣◥ CORE SYSTEM INITIALIZED ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢');
         const line = errDark('—'.repeat(68));
@@ -180,11 +182,6 @@ ${errDimRed(' ⤷ Debug Info:')} ${errGray('In caso di loop o crash di cifratura
 `);
         }
     } while ((opzione !== '1' && opzione !== '2') || fs.existsSync(`./${authFile}/creds.json`));
-}
-
-// FIX CRITICO: Se la sessione esiste già, opzione deve avere un valore di default sicuro per non compromettere il socket di Baileys
-if (!opzione) {
-    opzione = methodCodeQR ? '1' : '2';
 }
 
 const filterStrings = [
@@ -514,4 +511,168 @@ global.reload = async (_ev, filename) => {
                 conn.logger.warn(chalk.hex('#FF3333')(`🗑️ [COMPILER_PURGE]: Modulo rimosso dal disco: '${filename}'`));
                 return delete global.plugins[filename];
             }
-        } else
+        } else conn.logger.info(chalk.hex('#D8006E')(`🆕 [COMPILER_REGISTER]: Individuata nuova risorsa: '${filename}'`));
+
+        try {
+            const module = (await import(`${global.__filename(dir)}?update=${Date.now()}`));
+            global.plugins[filename] = module.default || module;
+        } catch (e) {
+            conn.logger.error(chalk.red(`⚠️ [COMPILATION_ERROR]: Eccezione nel modulo '${filename}'\n${format(e)}`));
+        } finally {
+            global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)));
+        }
+    }
+};
+Object.freeze(global.reload);
+const pluginWatcher = watch(pluginFolder, global.reload);
+pluginWatcher.setMaxListeners(20);
+await global.reloadHandler();
+async function _quickTest() {
+    const test = await Promise.all([
+        spawn('ffmpeg'),
+        spawn('ffprobe'),
+        spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
+        spawn('convert'),
+        spawn('magick'),
+        spawn('gm'),
+        spawn('find', ['--version']),
+    ].map((p) => {
+        return Promise.race([
+            new Promise((resolve) => {
+                p.on('close', (code) => {
+                    resolve(code !== 127);
+                });
+            }),
+            new Promise((resolve) => {
+                p.on('error', (_) => resolve(false));
+            })
+        ]);
+    }));
+    const [ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm, find] = test;
+    const s = global.support = { ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm, find };
+    Object.freeze(global.support);
+}
+function clearDirectory(dirPath) {
+    if (!existsSync(dirPath)) {
+        try {
+            mkdirSync(dirPath, { recursive: true });
+        } catch (e) {
+            console.error(chalk.red(`Errore directory ${dirPath}:`, e));
+        }
+        return;
+    }
+    const filenames = readdirSync(dirPath);
+    filenames.forEach(file => {
+        const filePath = join(dirPath, file);
+        try {
+            const stats = statSync(filePath);
+            if (stats.isFile()) {
+                unlinkSync(filePath);
+            } else if (stats.isDirectory()) {
+                rmSync(filePath, { recursive: true, force: true });
+            }
+        } catch (e) {
+            console.error(chalk.red(`Errore spurgo file di cache ${filePath}:`, e));
+        }
+    });
+}
+function purgeSession(sessionDir, cleanPreKeys = false) {
+    try {
+        if (!existsSync(sessionDir)) {
+            console.log(chalk.bold.hex('#FF9F43')(`\n⚡ [FS_NOTICE]: Directory di sessione non indicizzata: ${sessionDir}`));
+            return;
+        }
+        const files = readdirSync(sessionDir);
+        let deletedCount = 0;
+        let preKeyDeletedCount = 0;
+        files.forEach(file => {
+            const filePath = path.join(sessionDir, file);
+            const stats = statSync(filePath);
+            const fileAge = (Date.now() - stats.mtimeMs) / (1000 * 60 * 60 * 24);
+
+            if (file === 'creds.json') {
+                return;
+            }
+
+            if (file.startsWith('pre-key') && cleanPreKeys) {
+                if (fileAge > 1) { 
+                    try {
+                        unlinkSync(filePath);
+                        preKeyDeletedCount++;
+                        deletedCount++;
+                    } catch (err) {
+                        console.log(chalk.bold.red(`\n❌ [FS_ERR] Impossibile purgare chiave pre-key: ${err.message}`));
+                    }
+                }
+            } else if (!file.startsWith('pre-key')) {
+                try {
+                    if (stats.isDirectory()) {
+                        rmSync(filePath, { recursive: true, force: true });
+                    } else {
+                        unlinkSync(filePath);
+                    }
+                    deletedCount++;
+                } catch (err) {
+                    console.log(chalk.bold.red(`\n❌ [FS_ERR] Fallimento unlink su file di sessione volatile: ${err.message}`));
+                }
+            }
+        });
+
+        let message = chalk.bold.hex('#FF3333')(`\n🧹 [SYS_PURGE]: FILE SYSTEM DI SESSIONE OTTIMIZZATO\n⤷ Purgati: ${deletedCount} file temporanei in ${sessionDir}`);
+        if (preKeyDeletedCount > 0) {
+            message += `\n⤷ Destrutturate: ${preKeyDeletedCount} chiavi d'accesso obsolete rimosse`;
+        }
+
+        if (deletedCount > 0) {
+            console.log(message);
+        } else {
+            console.log(chalk.bold.hex('#555555')(`\n⚙️ [SYS_PURGE]: Buffer ${sessionDir} già ottimizzato. Nessun elemento obsoleto intercettato.`));
+        }
+
+    } catch (dirErr) {
+        console.log(chalk.bold.red(`\n❌ [CRITICAL_FS_ERR]: Errore nell'ottimizzazione del cluster: ${dirErr.message}`));
+    }
+}
+
+setInterval(async () => {
+    if (global.stopped === 'close' || !global.conn || !global.conn.user) return;
+    clearDirectory(join(__dirname, 'tmp'));
+    clearDirectory(join(__dirname, 'temp'));
+    console.log(chalk.bold.hex('#00FFCC')(`\n⚙️ [GARBAGE_COLLECTOR]: Svuotamento buffer multimediale eseguito. RAM ottimizzata.`));
+}, 1000 * 60 * 60);
+
+setInterval(async () => {
+    if (global.stopped === 'close' || !global.conn || !global.conn.user) return;
+    purgeSession(`./${global.authFile}`);
+    const subBotDir = `./${global.authFileJB}`;
+    if (existsSync(subBotDir)) {
+         const subBotFolders = readdirSync(subBotDir).filter(file => statSync(join(subBotDir, file)).isDirectory());
+         subBotFolders.forEach(folder => purgeSession(join(subBotDir, folder)));
+    }
+}, 1000 * 60 * 60 * 2);
+
+setInterval(async () => {
+    if (global.stopped === 'close' || !global.conn || !global.conn.user) return;
+    console.log(chalk.bold.hex('#D8006E')(`\n⚙️ [CRYPT_CLEANUP]: Ciclo automatico rimozione pre-keys sature...`));
+    purgeSession(`./${global.authFile}`, true);
+    const subBotDir = `./${global.authFileJB}`;
+    if (existsSync(subBotDir)) {
+         const subBotFolders = readdirSync(subBotDir).filter(file => statSync(join(subBotDir, file)).isDirectory());
+         subBotFolders.forEach(folder => purgeSession(join(subBotDir, folder), true));
+    }
+}, 1000 * 60 * 60 * 6);
+
+_quickTest().then(() => conn.logger.info(chalk.bold.cyan(``)));
+
+let filePath = fileURLToPath(import.meta.url);
+const mainWatcher = watch(filePath, async () => {
+  console.log(chalk.bgRed(chalk.black.bold(" [ERROR-BOT KERNEL]: Rilevata modifica su 'main.js'. Esecuzione Hot-Swap in corso... ")))
+  await global.reloadHandler(true).catch(console.error);
+});
+mainWatcher.setMaxListeners(20);
+
+conn.ev.on('connection.update', async (update) => {
+    if (update.connection === 'open') {
+        ripristinaTimer(conn);
+    }
+});
