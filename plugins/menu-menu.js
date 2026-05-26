@@ -18,7 +18,7 @@ const defaultMenu = {
   testoInizio: `
 ☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰 ☠️
 ───────────────────────
-⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: ${mention}
+⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: @user
 ⎔ 𝘓𝘪𝘧𝘦_𝘚𝘪𝘨𝘯𝘢𝘭: %uptime
 ⎔ 𝘎𝘩𝘰𝘴𝘵_𝘜𝘴𝘦𝘳𝘴: %totalreg
 ───────────────────────
@@ -32,12 +32,7 @@ const defaultMenu = {
   testoFine: `_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰𝘺 𝘵𝘩𝘦 𝘤𝘩𝘢𝘰𝘴._`,
 }
 
-// Aggiornato: ora tutte e 3 le immagini hanno l'estensione .jpeg
-const menuImages = [
-  './menu-1.jpeg',
-  './menu-2.jpeg',
-  './menu-3.jpeg'
-]
+const menuImages = ['./menu-1.jpeg', './menu-2.jpeg', './menu-3.jpeg']
 
 const bldButtons = [
   { title: "🛡️ SICUREZZA", command: "attiva" },
@@ -52,6 +47,7 @@ const bldButtons = [
 
 let handler = async (m, { conn, usedPrefix: _p }) => {
   try {
+    let mention = `@${m.sender.split('@')[0]}` // Definizione del tag dinamico
     await conn.sendPresenceUpdate('composing', m.chat)
 
     let name = await conn.getName(m.sender) || '𝘜𝘯𝘬𝘯𝘰𝘸𝘯'
@@ -86,6 +82,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     let text = _text.replace(/%name/g, name)
                     .replace(/%uptime/g, uptime)
                     .replace(/%totalreg/g, totalreg)
+                    .replace(/@user/g, mention) // Sostituzione dinamica
 
     const buttons = bldButtons.map(btn => ({
       buttonId: _p + btn.command,
@@ -93,19 +90,14 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       type: 1
     }))
 
-    // Estrazione random dell'immagine .jpeg
     let randomImg = menuImages[Math.floor(Math.random() * menuImages.length)]
     let imageBuffer = null
-    
+
     try {
       imageBuffer = await fs.readFile(randomImg)
     } catch (e) {
-      console.log(`⚠️ Immagine ${randomImg} non trovata, tento il recupero...`)
       for (let img of menuImages) {
-        try {
-          imageBuffer = await fs.readFile(img)
-          break
-        } catch (err) {}
+        try { imageBuffer = await fs.readFile(img); break } catch (err) {}
       }
     }
 
@@ -115,7 +107,8 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       footer: "ᴇʀʀᴏʀ⁴⁰⁴ // ʙʟᴅ sʏsᴛᴇᴍ ᴅᴏᴡɴ",
       buttons: buttons,
       headerType: 4,
-      viewOnce: true
+      viewOnce: true,
+      mentions: [m.sender] // FONDAMENTALE: rende il tag cliccabile
     }, { quoted: m })
 
     await m.react('💥')
