@@ -3,7 +3,6 @@ import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
 import moment from 'moment-timezone'
 
-// Configurazione immagini random (tutte .jpeg)
 const menuImages = [
   './menu-1.jpeg',
   './menu-2.jpeg',
@@ -14,7 +13,7 @@ const defaultMenu = {
   before: `
 ☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘎𝘈𝘔𝘌𝘚 ☠️
 ───────────────────────
-⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: %name
+⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: %mention
 ⎔ 𝘚𝘺𝘴_𝘓𝘝𝘓: %level
 ⎔ 𝘊𝘳𝘦𝘥𝘪𝘵𝘴: %eris
 ⎔ 𝘗𝘳𝘪𝘷𝘪𝘭𝘦𝘨𝘦𝘴: %role
@@ -25,44 +24,34 @@ const defaultMenu = {
   header: 'ョ ── %category 𪚥',
   body: '    ⤿ 🕹️ %cmd %islimit%isPremium ╳',
   footer: '͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞ ͟͟͞͞\n',
-  after: `_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰ย 𝘵𝘩𝘦 𝘤𝘩𝘢𝘰𝘴._`,
+  after: `_𝘚𝘺𝘴𝘵𝘦𝘮 𝘸𝘪𝘭𝘭 𝘯𝘰𝘵 𝘳𝘦𝘉𝘰𝘰𝘵. 𝘌𝘯𝘫𝘰𝘺 𝘵𝘩𝘦 𝘤𝘩𝘢𝘰𝘴._`
 }
 
-let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
-  let tags = { 'giochi': '𝘚𝘠𝘚𝘛𝘌𝘔_𝘔𝘈𝘓𝘍𝘜𝘕𝘊𝘛𝘐𝘖𝘕_𝘎𝘈𝘔𝘌𝘚' }
-
+let handler = async (m, { conn, usedPrefix: _p }) => {
   try {
     await conn.sendPresenceUpdate('composing', m.chat)
 
-    // Dati Utente
+    let mention = `@${m.sender.split('@')[0]}`
     let user = global.db.data.users[m.sender] || {}
-    let { exp = 0, level = 1, role = 'Utente', eris = 0, limit = 10 } = user
-    let name = await conn.getName(m.sender)
+    let { level = 1, role = 'Utente', eris = 0 } = user
     let uptime = clockString(process.uptime() * 1000)
+    let tags = { 'giochi': '𝘚𝘠𝘚𝘛𝘌𝘔_𝘔𝘈𝘓𝘍𝘜𝘕𝘊𝘛𝘐𝘖𝘕_𝘎𝘈𝘔𝘌𝘚' }
 
-    // Filtro Plugin
     let help = Object.values(global.plugins)
-      .filter(p => !p.disabled)
+      .filter(p => !p.disabled && p.tags && p.tags.includes('giochi'))
       .map(p => ({
         help: Array.isArray(p.help) ? p.help : [p.help],
-        tags: Array.isArray(p.tags) ? p.tags : [p.tags],
         prefix: 'customPrefix' in p,
         limit: p.limit,
         premium: p.premium
       }))
 
-    let groups = {}
-    for (let tag in tags) {
-      groups[tag] = help.filter(menu => menu.tags && menu.tags.includes(tag) && menu.help[0])
-    }
-
-    // Costruzione Testo
     let _text = [
-      defaultMenu.before,
+      defaultMenu.before.replace(/%mention/g, mention),
       ...Object.keys(tags).map(tag => {
         return defaultMenu.header.replace(/%category/g, tags[tag]) + '\n' +
           [
-            ...groups[tag].map(menu =>
+            ...help.map(menu =>
               menu.help.map(cmd => defaultMenu.body
                 .replace(/%cmd/g, menu.prefix ? cmd : _p + cmd)
                 .replace(/%islimit/g, menu.limit ? ' ⚠️' : '')
@@ -77,32 +66,32 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     ].join('\n')
 
     let replace = {
-      '%': '%', p: _p, eris, name, level, limit, role, uptime
+      '%': '%', p: _p, eris, level, role, uptime
     }
 
     let text = _text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join('|')})`, 'g'), (_, name) => '' + replace[name])
 
-    // Estrazione random dell'immagine dalle 3 rinfrescate (.jpeg)
     let randomImg = menuImages[Math.floor(Math.random() * menuImages.length)]
     let imageBuffer = null
-    
     try {
       imageBuffer = await fs.readFile(randomImg)
     } catch (e) {
-      console.log(`⚠️ Errore nel caricamento di ${randomImg}, provo un'alternativa...`)
       for (let img of menuImages) {
-        try {
-          imageBuffer = await fs.readFile(img)
-          break
-        } catch (err) {}
+        try { imageBuffer = await fs.readFile(img); break } catch (err) {}
       }
     }
 
-    // Invio finale con l'immagine random caricata in Buffer
     await conn.sendMessage(m.chat, {
       ...(imageBuffer ? { image: imageBuffer } : {}),
       caption: text.trim(),
-      mentions: [m.sender]
+      mentions: [m.sender],
+      contextInfo: {
+        mentionedJid: [m.sender],
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: '120363232743845068@newsletter',
+          newsletterName: "☠️ ᴇʀʀᴏʀ⁴⁰⁴ // ɢᴀᴍᴇ ɴᴇᴛ ☠️"
+        }
+      }
     }, { quoted: m })
 
     await m.react('💥')
