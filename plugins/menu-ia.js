@@ -4,7 +4,6 @@ import { xpRange } from '../lib/levelling.js'
 import moment from 'moment-timezone'
 import os from 'os'
 
-// Configurazione immagini random (tutte .jpeg)
 const menuImages = [
   './menu-1.jpeg',
   './menu-2.jpeg',
@@ -27,7 +26,7 @@ const defaultMenu = {
   before: `
 ☠️ 𝗘 𝗥 𝗥 𝗢 𝗥  𝟰 𝟬 𝟰  // 𝘕𝘌𝘜𝘙𝘈𝘓 ☠️
 ───────────────────────
-⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: %name
+⎔ 𝘊𝘰𝘳𝘦_𝘓𝘪𝘯𝘬: %mention
 ⎔ 𝘚𝘛𝘓_𝘓𝘝𝘓: %level
 ⎔ 𝘓𝘪𝘧ｪ_𝘚𝘪𝘨𝘯𝘢𝘭: %uptime
 ⎔ 𝘎𝘩𝘰𝘴𝘵_𝘜𝘴𝘦𝘳𝘴: %totalreg
@@ -44,7 +43,8 @@ const defaultMenu = {
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
   try {
     await conn.sendPresenceUpdate('composing', m.chat)
-
+    
+    let mention = `@${m.sender.split('@')[0]}` // Tag dinamico
     let { level = 0, role = 'User' } = global.db.data.users[m.sender] || {}
     let name = await conn.getName(m.sender) || 'Utente'
     let uptime = clockString(process.uptime() * 1000)
@@ -81,30 +81,24 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     let replace = {
       '%': '%',
       p: _p,
-      name, level, uptime, totalreg
+      name, level, uptime, totalreg, mention
     }
 
     let text = _text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join('|')})`, 'g'), (_, name) => '' + replace[name])
 
     await m.react('💥')
 
-    // Estrazione random dell'immagine .jpeg
     let randomImg = menuImages[Math.floor(Math.random() * menuImages.length)]
     let imageBuffer = null
-    
+
     try {
       imageBuffer = await fs.readFile(randomImg)
     } catch (e) {
-      console.log(`⚠️ Immagine ${randomImg} non trovata, tento il recupero...`)
       for (let img of menuImages) {
-        try {
-          imageBuffer = await fs.readFile(img)
-          break
-        } catch (err) {}
+        try { imageBuffer = await fs.readFile(img); break } catch (err) {}
       }
     }
 
-    // Invio con immagine locale randomizzata e layout modificato
     await conn.sendMessage(m.chat, {
       ...(imageBuffer ? { image: imageBuffer } : {}),
       caption: text.trim(),
