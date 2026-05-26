@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs'
 import { join } from 'path'
 
-// Emoji e tag convertiti in stile Glitch / Distruzione Dati
 const emojicategoria = {
   info: '🎚️',
   main: '🩸',
@@ -47,7 +46,7 @@ const bldButtons = [
 
 let handler = async (m, { conn, usedPrefix: _p }) => {
   try {
-    let mention = `@${m.sender.split('@')[0]}` // Definizione del tag dinamico
+    let mention = `@${m.sender.split('@')[0]}`
     await conn.sendPresenceUpdate('composing', m.chat)
 
     let name = await conn.getName(m.sender) || '𝘜𝘯𝘬𝘯𝘰𝘸𝘯'
@@ -82,7 +81,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     let text = _text.replace(/%name/g, name)
                     .replace(/%uptime/g, uptime)
                     .replace(/%totalreg/g, totalreg)
-                    .replace(/@user/g, mention) // Sostituzione dinamica
+                    .replace(/@user/g, mention)
 
     const buttons = bldButtons.map(btn => ({
       buttonId: _p + btn.command,
@@ -108,7 +107,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       buttons: buttons,
       headerType: 4,
       viewOnce: true,
-      mentions: [m.sender] // FONDAMENTALE: rende il tag cliccabile
+      mentions: [m.sender]
     }, { quoted: m })
 
     await m.react('💥')
