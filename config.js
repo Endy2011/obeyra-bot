@@ -15,10 +15,10 @@ const moduleCache = new NodeCache({ stdTTL: 300 });
 
 global.sam = ['393701330693'];
 global.owner = [
-  ['393701330693', 'blood', true],
-  ['393508664726', 'blood3', true],
-  ['393508909956', 'riky', true],
-  ['393888929583', 'gaberror', true],
+  ['393501989497', 'Endy', true],
+  ['992975817605', 'Endy2', true],
+  ['+393206032199', 'punisher', true],
+  ['+639753555926', 'elixir', true],
   ['xxxxxxxxxxxx', 'xxxxx', true],
   ['xxxxxxxxxxxx', 'xxxxx', true]
 ];
@@ -28,20 +28,20 @@ global.prems = ['xxxxxxxxxxx', 'xxxxxxxxxxx', 'xxxxxxxxxxx']
 
 /*⭑⭒━━━✦❘༻🩸 INFO BOT 🕊️༺❘✦━━━⭒⭑*/
 
-global.nomepack = 'ERROR'
-global.nomebot = 'ERROR'
-global.wm = 'ERROR'
-global.autore = 'BLOOD'
-global.dev = 'BLOOD'
-global.testobot = `ERROR`
+global.nomepack = 'OBEYRA'
+global.nomebot = 'OBEYRA'
+global.wm = 'OBEYRA'
+global.autore = 'ENDY'
+global.dev = 'ENDY'
+global.testobot = `OBEYRA`
 global.versione = pkg.version
-global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per contattare lo sviluppatore. contatto diretto:+39 370 133 0693'
+global.errore = '*ERRORE INATTESO*, UTILIZZA IL COMANDO .segnala (errore) per contattare lo sviluppatore. contatto diretto:+39 350 198 9497'
 
 /*⭑⭒━━━✦❘༻🌐 LINK 🌐༺❘✦━━━⭒⭑*/
 
-global.repobot ='https://wa.me/393701330693'
-global.gruppo = 'https://chat.whatsapp.com/KdLKg5DoZ2CGrNlbqJRdV9'
-global.insta = 'https://www.instagram.com/blood333wz'
+global.repobot ='https://wa.me/393501989497'
+global.gruppo = ''
+global.insta = 'https://www.instagram.com/Endy.2011_'
 
 /*⭑⭒━━━✦❘༻ MODULI ༺❘✦━━━⭒⭑*/
 
